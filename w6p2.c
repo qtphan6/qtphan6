@@ -1,5 +1,5 @@
-/*/////////////////////////////////////////////////////////////////////////
-                          Workshop - #6 (P1)
+*/////////////////////////////////////////////////////////////////////////
+                          Workshop - #6 (P2)
 Full Name  : 
 Student ID#: 
 Email      : 
@@ -17,11 +17,12 @@ piece of work is entirely of my own creation.
 
 #include <stdio.h>
 
-int main(void)
+int main()
 {
-    int maxItem = 10, endLoop, numbOfItems, priority[maxItem],i;
-    double netIncome, itemCost[maxItem], totalCost;
+    int maxItem = 10, endLoop, numbOfItems, priority[maxItem],i, userChoice, Years, Months = 0;
+    double netIncome, itemCost[maxItem], totalCost, amount,remainder;
     char finOption[maxItem];
+
 
 
     printf("+--------------------------+\n");
@@ -127,6 +128,89 @@ int main(void)
     printf("                      $%11.2lf\n\n", totalCost);
     
     
-    printf("Best of luck in all your future endeavours!\n\n");
+
+    do
+    {
+       printf("How do you want to forecast your wish list?\n");
+       printf(" 1. All items (no filter)\n");
+       printf(" 2. By priority\n");
+       printf(" 0. Quit/Exit\n");
+       printf("Selection: ");
+       scanf("%d", &userChoice);
+       if (userChoice > 2 || userChoice < 0)
+       {
+            printf("\nERROR: Invalid menu selection.\n\n");
+            i = 0;
+       } else if (userChoice == 0)
+       {
+            i = 1;
+       }
+       switch (userChoice)
+       {
+       case 1:
+        printf("====================================================\n");
+        printf("Filter:   All items\n");
+        printf("Amount:   $%1.2lf\n", totalCost);
+        Years = totalCost / netIncome / 12;  
+        remainder = (totalCost / netIncome/12 - Years) * 12;
+        do
+        {
+            remainder--;
+            Months++;
+        } while (remainder > 0);
+        printf("Forecast: %d years, %d months\n", Years,Months);
+        
+        for (i = 0; i < numbOfItems; i++)
+        {
+            if (finOption[i] == 'y')
+            {
+            printf("NOTE: Financing options are available on some items.\n");
+            printf("      You can likely reduce the estimated months.\n");
+            printf("====================================================\n\n");
+            i = numbOfItems;
+            }
+        }
+        break;
+        case 2: 
+        printf("\nWhat priority do you want to filter by? [1-3]: ");
+        scanf("%d", &userChoice);
+        for (i = 1; i <= numbOfItems; i++)
+        {
+            if (priority[i] == userChoice)
+            {
+                amount += itemCost[i];
+            }
+        }
+        printf("====================================================\n");
+        printf("Filter:   by priority (%d)\n",userChoice);
+        printf("Amount:   $%1.2lf\n", amount);
+        Years = amount / netIncome / 12;  
+        remainder = (amount / netIncome/ 12 - Years) * 12;
+        do
+        {
+            remainder--;
+            Months++;
+        } while (remainder > 0);
+        
+        
+        printf("Forecast: %d years, %d months\n", Years,Months);
+        if (finOption[userChoice] == 'y')
+        {
+            printf("NOTE: Financing options are available on some items.\n");
+            printf("      You can likely reduce the estimated months.\n");
+            printf("====================================================\n\n");
+        }
+       default:
+        break;
+       }
+       amount = 0.0;
+       Months = 0;
+    } while (i !=1);
+    
+    printf("\nBest of luck in all your future endeavours!\n\n");
+
+
+
+
     return 0;
 }
